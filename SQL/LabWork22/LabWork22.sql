@@ -9,6 +9,13 @@ SET lastenter = CASE
  END -- если формат даты корректный END AS новый—толбец
 
  --task 3
+ CREATE TABLE Import3_userRoles(
+	RoleName NVARCHAR(20),
+	IdUser int,
+	[Login] NVARCHAR(20),
+	[Password] NVARCHAR(20)
+);
+
  DECLARE @xml XML = '
  <Users>
     <Role name="Admin">
@@ -75,6 +82,9 @@ SET lastenter = CASE
 DECLARE @hDoc INT;
 EXEC sp_xml_preparedocument @hDoc OUTPUT, @xml
 
+
+
+INSERT INTO Import3_userRoles
 SELECT *
 FROM OPENXML(@hDoc, '/Users/Role/User')
 WITH
@@ -84,3 +94,9 @@ WITH
 	[Login] NVARCHAR(20) 'login',
 	[Password] NVARCHAR(20) 'password'
 );
+
+SELECT * FROM Import3_userRoles;
+
+SELECT * FROM Import3_User;
+
+SELECT * FROM Import3_Role;
